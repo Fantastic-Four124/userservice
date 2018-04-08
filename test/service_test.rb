@@ -32,12 +32,12 @@ class ServiceTest < Minitest::Test
     #clearRedis
   end
 
-  def teardown
-    @jim.destroy
-    @bob.destroy
-    #not_logged_in
-    #clearRedis
-  end
+#   def teardown
+#     @jim.destroy
+#     @bob.destroy
+#     #not_logged_in
+#     #clearRedis
+#   end
 
   def test_user
     check = User.find_by_username('jim').email
