@@ -70,6 +70,7 @@ end
 
 
 post PREFIX + '/user/register' do
+  puts params['username']
   username = params['username'].to_s
   password = params['password'].to_s
   email = params['email'].to_s
