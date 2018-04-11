@@ -47,8 +47,8 @@ helpers do
 end
 
 # For loader.io to auth
-get '/loaderio-1541f51ead65ae3319ad8207fee20f8d.txt' do
-  send_file 'loaderio-1541f51ead65ae3319ad8207fee20f8d.txt'
+get '/loaderio-bf4a2013f6f1a1d87c7eea9ff1c17eb5' do
+  send_file 'loaderio-bf4a2013f6f1a1d87c7eea9ff1c17eb5.txt'
 end
 
 post PREFIX + '/login' do
