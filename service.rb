@@ -70,9 +70,9 @@ end
 
 
 post PREFIX + '/user/register' do
-  username = params['username']
-  password = params['password']
-  email = params['email']
+  username = params['username'].to_s
+  password = params['password'].to_s
+  email = params['email'].to_s
   user = User.new(username: username, password: password, email:email)
 
   if user.save
