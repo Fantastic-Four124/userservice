@@ -47,7 +47,7 @@ helpers do
 end
 
 # For loader.io to auth
-get '/loaderio-bf4a2013f6f1a1d87c7eea9ff1c17eb5' do
+get '/loaderio-bf4a2013f6f1a1d87c7eea9ff1c17eb5.txt' do
   send_file 'loaderio-bf4a2013f6f1a1d87c7eea9ff1c17eb5.txt'
 end
 
