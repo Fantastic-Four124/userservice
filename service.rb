@@ -55,9 +55,9 @@ post PREFIX + '/login' do
   @user = User.find_by_username(params['username'])
   if !@user.nil? && @user.password == params['password']
     token = SecureRandom.hex
-    $redis.set token, user.id
+    $redis.set token, @user.id
     $redis.expire token, 432000
-    u_hash = user.as_json
+    u_hash = @user.as_json
     u_hash['leaders'] = []
     u_hash['followers'] = []
     @user.leaders.each {|l| u_hash['leaders'].push l.id}
