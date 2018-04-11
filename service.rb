@@ -60,8 +60,8 @@ post PREFIX + '/login' do
     u_hash = user.as_json
     u_hash['leaders'] = []
     u_hash['followers'] = []
-    user.leaders.each {|l| u_hash['leaders'].push l.id}
-    user.followers.each {|f| u_hash['followers'].push f.id}
+    @user.leaders.each {|l| u_hash['leaders'].push l.id}
+    @user.followers.each {|f| u_hash['followers'].push f.id}
     return {user: u_hash, token: token}.to_json
   end
 
