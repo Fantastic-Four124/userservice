@@ -15,7 +15,7 @@ require_relative 'models/user'
 require_relative 'models/follow'
 
 configure do
-    uri = URI.parse("redis://rediscloud:5lKsZnGwfn5y9O12JAQ7T8vIWAKrr0P8@redis-16859.c14.us-east-1-3.ec2.cloud.redislabs.com:16859")
+    uri = URI.parse(ENV['REDISCLOUD_URL'])
     $redis = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
     #byebug
 end
