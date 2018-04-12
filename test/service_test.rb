@@ -29,6 +29,7 @@ class ServiceTest < Minitest::Test
     @jim_id = User.find_by_username('jim').id
     @bob_id = User.find_by_username('bob').id
     @follow_test = Follow.create({user_id: @jim_id, leader_id: @bob_id})
+    @follow_test = Follow.create({user_id: @bob_id, leader_id: @jim_id})
     #clearRedis
   end
 
@@ -49,12 +50,12 @@ class ServiceTest < Minitest::Test
     assert_equal(check,@bob_id)
   end
 
-  def test_login
-    param = { 'username' => 'jim', 'password' => 'abc' }
-    response = post PREFIX + '/login', param.to_json
-    puts JSON.parse(response)
-    assert last_response.ok?
-  end
+  # def test_login
+  #   param = { 'username' => 'jim', 'password' => 'abc' }
+  #   response = post PREFIX + '/login', param.to_json
+  #   puts JSON.parse(response)
+  #   assert last_response.ok?
+  # end
 
 
 
