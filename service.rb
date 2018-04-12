@@ -52,7 +52,10 @@ get '/loaderio-bf4a2013f6f1a1d87c7eea9ff1c17eb5.txt' do
 end
 
 post PREFIX + '/login' do
-  @user = User.find_by_username(params['username'])
+  @user = $redis.get params['username']
+  if @user.nil?
+    @user = User.find_by_username(params['username'])
+  end
   if !@user.nil? && @user.password == params['password']
     token = SecureRandom.hex
     $redis.set token, @user.id
@@ -78,7 +81,11 @@ post PREFIX + '/user/register' do
 
   if user.save
      token = SecureRandom.hex
-     $redis.set token, user.id
+     user_hash = Hash.new
+     user_hash["id"] = user.id
+     user_hash["username"] = user.username
+     $redis.set token, user_hash
+     $redis.set username, user
      $redis.expire token, 432000
 
      u_hash = user.as_json
