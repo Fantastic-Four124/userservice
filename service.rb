@@ -67,6 +67,7 @@ post PREFIX + '/login' do
       $redis.set token, @user.id
       $redis.expire token, 432000
       u_hash = @user.to_json
+      #Try
       # u_hash['leaders'] = []
       # u_hash['followers'] = []
       # @user.leaders.each
