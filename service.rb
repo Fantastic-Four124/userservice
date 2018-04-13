@@ -80,7 +80,7 @@ post PREFIX + '/user/register' do
      user_hash = Hash.new
      user_hash["id"] = user.id
      user_hash["username"] = user.username
-     u_hash = user.as_json
+     u_hash = user.to_json
      $redis.set user.id, u_hash
      $redis.set username, user.password
      $redis.set token, user_hash.to_json
