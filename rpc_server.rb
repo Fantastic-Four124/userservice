@@ -14,10 +14,10 @@ require_relative 'prefix.rb'
 require_relative 'erb_constants.rb'
 require_relative 'models/follow'
 require_relative 'models/user'
-require_relative 'models/hashtag'
-require_relative 'models/mention'
-require_relative 'models/tweet'
-require_relative 'models/hashtag_tweets'
+# require_relative 'models/hashtag'
+# require_relative 'models/mention'
+# require_relative 'models/tweet'
+# require_relative 'models/hashtag_tweets'
 
 #Dir[File.dirname(__FILE__) + '/api/v1/user_service/*.rb'].each { |file| require file }
 

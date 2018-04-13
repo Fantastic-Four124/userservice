@@ -14,10 +14,10 @@ require_relative 'prefix.rb'
 require_relative 'erb_constants.rb'
 require_relative 'models/follow'
 require_relative 'models/user'
-require_relative 'models/hashtag'
-require_relative 'models/mention'
-require_relative 'models/tweet'
-require_relative 'models/hashtag_tweets'
+# require_relative 'models/hashtag'
+# require_relative 'models/mention'
+# require_relative 'models/tweet'
+# require_relative 'models/hashtag_tweets'
 
 class UserClient
   attr_accessor :call_id, :response, :lock, :condition, :connection,
@@ -77,29 +77,29 @@ class UserClient
   end
 end
 
-client = UserClient.new('rpc_queue',ENV["RABBITMQ_BIGWIG_RX_URL"])
-
-
-#thr = Thread.new {puts ' [x] Requesting fib(30)'; response = client.call(30);puts " [.] Got #{response}";}
-#thr.join
-# puts ' [x] Requesting fib(30)'
-# response = client.call(30)
+# client = UserClient.new('rpc_queue',ENV["RABBITMQ_BIGWIG_RX_URL"])
 #
-# puts " [.] Got #{response}"
-count  = 0;
-#loop do
-  #puts "I am busy I can't wait"
-  #count = count + 1
-user = User.new(username: "zhoutest4")
-user.password = "12345"
-to_do = {:function => "register", :candidate =>user.to_json}
-thr = Thread.new {
-    puts " [x] Requesting #{user.username} and #{user.password}"; response = client.call(to_do.to_json);puts " [.] Got #{response}";
-}
-  # count = 0 if count == 30
-  # #thr.join
-  # puts "I am busy I can't wait"
-  sleep 5.0
-#end
-
-client.stop
+#
+# #thr = Thread.new {puts ' [x] Requesting fib(30)'; response = client.call(30);puts " [.] Got #{response}";}
+# #thr.join
+# # puts ' [x] Requesting fib(30)'
+# # response = client.call(30)
+# #
+# # puts " [.] Got #{response}"
+# count  = 0;
+# #loop do
+#   #puts "I am busy I can't wait"
+#   #count = count + 1
+# user = User.new(username: "zhoutest4")
+# user.password = "12345"
+# to_do = {:function => "register", :candidate =>user.to_json}
+# thr = Thread.new {
+#     puts " [x] Requesting #{user.username} and #{user.password}"; response = client.call(to_do.to_json);puts " [.] Got #{response}";
+# }
+#   # count = 0 if count == 30
+#   # #thr.join
+#   # puts "I am busy I can't wait"
+#   sleep 5.0
+# #end
+#
+# client.stop

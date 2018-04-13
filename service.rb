@@ -52,7 +52,6 @@ end
 
 post PREFIX + '/login' do
   first_try = JSON.parse($redis.get params['username'])
-  puts "I am here"
   if (first_try && first_try["password"] == params['username'])
     user_hash = Hash.new
     user_hash["id"] = first_try["id"]
@@ -105,9 +104,9 @@ post PREFIX + '/user/register' do
      $redis.set token, user_hash.to_json
      $redis.expire token, 432000
 
-     puts JSON.parse($redis.get user.id)
-     puts JSON.parse($redis.get username)
-     puts JSON.parse($redis.get token)
+     # puts JSON.parse($redis.get user.id)
+     # puts JSON.parse($redis.get username)
+     # puts JSON.parse($redis.get token)
 
 
      # u_hash['leaders'] = []
@@ -125,4 +124,36 @@ post PREFIX + '/:token/logout' do
     return {err: false}.to_json
   end
   {err: true}.to_json
+end
+
+post '/test/reset/all' do
+  clear_all
+  recreate_testuser(params)
+end
+
+post '/test/reset/testuser' do
+  remove_everything_about_testuser(params['username'])
+  recreate_testuser(params)
+end
+
+
+def recreate_testuser(params)
+  result = User.new(id: params['user_id'], username: params['username'], password: params['password'], email:params['email']).save
+end
+
+def clear_all()
+  User.destroy_all
+end
+
+def remove_everything_about_testuser(testuser_name)
+  list_of_activerecords = [
+    User.find_by(username: testuser_name)
+  ]
+  list_of_activerecords.each { |ar| destroy_and_save(ar) }
+end
+
+def destroy_and_save(active_record_object)
+  return if active_record_object == nil
+  active_record_object.destroy
+  active_record_object.save
 end
