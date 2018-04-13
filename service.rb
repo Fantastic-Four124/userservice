@@ -106,6 +106,7 @@ post PREFIX + '/users/register' do
 
      # puts JSON.parse($redis.get user.id)
      # puts JSON.parse($redis.get username)
+     puts token
      puts JSON.parse($redis.get token)
 
 
