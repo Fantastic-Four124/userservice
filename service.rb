@@ -56,7 +56,7 @@ post PREFIX + '/login' do
     token = SecureRandom.hex
     $redis.set token, @user.id
     $redis.expire token, 432000
-    u_hash = @user.as_json
+    u_hash = @user.to_json
     u_hash['leaders'] = []
     u_hash['followers'] = []
     @user.leaders.each {|l| u_hash['leaders'].push l.id}
@@ -80,14 +80,17 @@ post PREFIX + '/user/register' do
      user_hash = Hash.new
      user_hash["id"] = user.id
      user_hash["username"] = user.username
+     user_log["password"] = user.password
+     user_log["id"] = user.id
      u_hash = user.to_json
+
      $redis.set user.id, u_hash
-     $redis.set username, user.password
+     $redis.set username, user_log.to_json
      $redis.set token, user_hash.to_json
      $redis.expire token, 432000
 
      puts JSON.parse($redis.get user.id)
-     puts $redis.get username
+     puts JSON.parse($redis.get username)
      puts JSON.parse($redis.get token)
 
 
