@@ -78,6 +78,7 @@ post PREFIX + '/user/register' do
   if user.save
      token = SecureRandom.hex
      user_hash = Hash.new
+     user_log = Hash.new
      user_hash["id"] = user.id
      user_hash["username"] = user.username
      user_log["password"] = user.password
