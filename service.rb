@@ -86,7 +86,9 @@ post PREFIX + '/user/register' do
      $redis.set token, user_hash.to_json
      $redis.expire token, 432000
 
-     puts JSON.parse(u_hash)
+     puts JSON.parse($redis.get user.id)
+     puts $redis.get username
+     puts JSON.parse($redis.get token)
 
 
      # u_hash['leaders'] = []
