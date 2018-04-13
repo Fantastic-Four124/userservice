@@ -51,17 +51,29 @@ get '/loaderio-bf4a2013f6f1a1d87c7eea9ff1c17eb5.txt' do
 end
 
 post PREFIX + '/login' do
-  @user = User.find_by_username(params['username'])
-  if !@user.nil? && @user.password == params['password']
+  first_try = JSON.parse($redis.get params['username'])
+  if (first_try && first_try["password"] == params['username'])
+    user_hash = Hash.new
+    user_hash["id"] = first_try["id"]
+    user_hash["username"] = params['username']
     token = SecureRandom.hex
-    $redis.set token, @user.id
+    $redis.set token, user_hash.to_json
     $redis.expire token, 432000
-    u_hash = @user.to_json
-    u_hash['leaders'] = []
-    u_hash['followers'] = []
-    @user.leaders.each {|l| u_hash['leaders'].push l.id}
-    @user.followers.each {|f| u_hash['followers'].push f.id}
-    return {user: u_hash, token: token}.to_json
+    return {user: $redis.get first_try["id"], token: token}.to_json
+  else
+    @user = User.find_by_username(params['username'])
+    if !@user.nil? && @user.password == params['password']
+      token = SecureRandom.hex
+      $redis.set token, @user.id
+      $redis.expire token, 432000
+      u_hash = @user.to_json
+      # u_hash['leaders'] = []
+      # u_hash['followers'] = []
+      # @user.leaders.each
+      # {|l| u_hash['leaders'].push l.id}
+      # @user.followers.each {|f| u_hash['followers'].push f.id}
+      return {user: u_hash, token: token}.to_json
+    end
   end
 
   {err: true}.to_json
