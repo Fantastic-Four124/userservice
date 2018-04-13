@@ -60,7 +60,8 @@ post PREFIX + '/login' do
     token = SecureRandom.hex
     $redis.set token, user_hash.to_json
     $redis.expire token, 432000
-    return {user: $redis.get first_try["id"], token: token}.to_json
+    u_hash = $redis.get(first_try["id"])
+    return {user: u_hash, token: token}.to_json
   else
     @user = User.find_by_username(params['username'])
     if !@user.nil? && @user.password == params['password']
