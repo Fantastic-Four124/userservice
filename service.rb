@@ -82,7 +82,7 @@ post PREFIX + '/login' do
 end
 
 
-post PREFIX + '/user/register' do
+post PREFIX + '/users/register' do
   puts params['username']
   username = params['username'].to_s
   password = params['password'].to_s
