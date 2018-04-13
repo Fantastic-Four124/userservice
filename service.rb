@@ -106,7 +106,7 @@ post PREFIX + '/users/register' do
 
      # puts JSON.parse($redis.get user.id)
      # puts JSON.parse($redis.get username)
-     # puts JSON.parse($redis.get token)
+     puts JSON.parse($redis.get token)
 
 
      # u_hash['leaders'] = []
