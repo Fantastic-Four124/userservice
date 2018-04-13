@@ -73,19 +73,24 @@ post PREFIX + '/user/register' do
   username = params['username'].to_s
   password = params['password'].to_s
   email = params['email'].to_s
-  user = User.new(username: username, password: password, email:email)
+  user = User.new(username: username, password: password, email:email, number_of_followers: 0, number_of_leaders: 0)
 
   if user.save
      token = SecureRandom.hex
      user_hash = Hash.new
      user_hash["id"] = user.id
      user_hash["username"] = user.username
+     u_hash = user.as_json
+     $redis.set user.id, u_hash
+     $redis.set username, user.password
      $redis.set token, user_hash.to_json
      $redis.expire token, 432000
 
-     u_hash = user.as_json
-     u_hash['leaders'] = []
-     u_hash['followers'] = []
+     puts JSON.parse(u_hash)
+
+
+     # u_hash['leaders'] = []
+     # u_hash['followers'] = []
 
      return {user: u_hash, token: token}.to_json
   end
