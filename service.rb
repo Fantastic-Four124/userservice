@@ -19,7 +19,7 @@ configure do
     $redis = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
 end
 
-set :allow_origin, '\*'
+set :allow_origin, '*'
 set :allow_methods, 'GET,HEAD,POST'
 set :allow_headers, 'accept,content-type,if-modified-since'
 set :expose_headers, 'location,link'
