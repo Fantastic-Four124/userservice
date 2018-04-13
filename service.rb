@@ -52,6 +52,7 @@ end
 
 post PREFIX + '/login' do
   first_try = JSON.parse($redis.get params['username'])
+  puts "I am here"
   if (first_try && first_try["password"] == params['username'])
     user_hash = Hash.new
     user_hash["id"] = first_try["id"]
