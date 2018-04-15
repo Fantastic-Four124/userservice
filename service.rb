@@ -59,7 +59,7 @@ post PREFIX + '/login' do
     token = SecureRandom.hex
     $redis.set token, user_hash.to_json
     $redis.expire token, 432000
-    u_hash = $redis.get(first_try["id"])
+    u_hash = JSON.parse($redis.get(first_try["id"]))
     return {user: u_hash, token: token}.to_json
   else
     @user = User.find_by_username(params['username'])
@@ -99,7 +99,7 @@ post PREFIX + '/users/register' do
      user_log["id"] = user.id
      u_hash = user
 
-     $redis.set user.id, u_hash
+     $redis.set user.id, u_hash.to_json
      $redis.set username, user_log.to_json
      $redis.set token, user_hash.to_json
      $redis.expire token, 432000
