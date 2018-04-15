@@ -67,7 +67,7 @@ post PREFIX + '/login' do
       token = SecureRandom.hex
       $redis.set token, @user.id
       $redis.expire token, 432000
-      u_hash = @user.to_json
+      u_hash = @user
       #Try
       # u_hash['leaders'] = []
       # u_hash['followers'] = []
@@ -97,7 +97,7 @@ post PREFIX + '/users/register' do
      user_hash["username"] = user.username
      user_log["password"] = user.password
      user_log["id"] = user.id
-     u_hash = user.to_json
+     u_hash = user
 
      $redis.set user.id, u_hash
      $redis.set username, user_log.to_json
