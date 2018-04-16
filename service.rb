@@ -18,6 +18,8 @@ require_relative 'models/follow'
 configure do
     uri = URI.parse(ENV['REDISCLOUD_URL'])
     $redis = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
+    uri2 = URI.parse(ENV['REDISCLOUD_FOLLOW'])
+    $redis_follow = Redis.new(:host => uri2.host, :port => uri2.port, :password => uri2.password)
 end
 
 set :allow_origin, '*'
@@ -61,6 +63,10 @@ post PREFIX + '/login' do
     $redis.set token, user_hash.to_json
     $redis.expire token, 432000
     u_hash = JSON.parse($redis.get(first_try["id"]))
+    u_hash['leaders'] = $redis_follow.get(first_try["id"] + ' leaders')
+    if !u_hash['leaders']
+        u_hash['leaders'] = JSON.parse(RestClient.get "https://fierce-garden-41263.herokuapp.com/api/v1/#{params[:token]}/users/#{first_try["id"]}/leader-list", {})
+    end
     return {user: u_hash, token: token}.to_json
   else
     @user = User.find_by_username(params['username'])
@@ -72,6 +78,7 @@ post PREFIX + '/login' do
       $redis.set token, user_hash.to_json
       $redis.expire token, 432000
       u_hash = @user
+      u_hash['leaders'] = u_hash['leaders'] = JSON.parse(RestClient.get "https://fierce-garden-41263.herokuapp.com/api/v1/#{params[:token]}/users/#{first_try["id"]}/leader-list", {})
       #Try
       # u_hash['leaders'] = []
       # u_hash['followers'] = []
