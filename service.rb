@@ -65,6 +65,7 @@ post PREFIX + '/login' do
     @user = User.find_by_username(params['username'])
     if !@user.nil? && @user.password == params['password']
       token = SecureRandom.hex
+      user_hash = Hash.new
       user_hash["id"] = @user.id
       user_hash["username"] = @user.username
       $redis.set token, user_hash.to_json
