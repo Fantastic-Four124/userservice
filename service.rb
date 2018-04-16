@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'sinatra/activerecord'
 require 'byebug'
+require 'bcrypt'
 #require_relative 'test_interface.rb'
 require 'time_difference'
 require 'time'
