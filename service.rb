@@ -53,7 +53,7 @@ end
 
 post PREFIX + '/login' do
   first_try = JSON.parse($redis.get params['username'])
-  if (first_try && first_try["password"] == params['username'])
+  if (first_try && BCrypt::Password.new(first_try["password"]) == params['username'])
     user_hash = Hash.new
     user_hash["id"] = first_try["id"]
     user_hash["username"] = params['username']
