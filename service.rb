@@ -65,8 +65,8 @@ post PREFIX + '/login' do
     u_hash = JSON.parse($redis.get(first_try["id"]))
     u_hash['leaders'] = $redis_follow.get(first_try["id"].to_s + ' leaders')
     if !u_hash['leaders']
-        puts "https://fierce-garden-41263.herokuapp.com/api/v1/#{params[:token].to_s}/users/#{first_try["id"].to_s}/leader-list"
-        u_hash['leaders'] = JSON.parse(RestClient.get "https://fierce-garden-41263.herokuapp.com/api/v1/#{params[:token].to_s}/users/#{first_try["id"].to_s}/leader-list", {})
+        puts "https://fierce-garden-41263.herokuapp.com/api/v1/#{token}/users/#{first_try["id"].to_s}/leader-list"
+        u_hash['leaders'] = JSON.parse(RestClient.get "https://fierce-garden-41263.herokuapp.com/api/v1/#{token}/users/#{first_try["id"].to_s}/leader-list", {})
     end
     return {user: u_hash, token: token}.to_json
   else
@@ -79,8 +79,8 @@ post PREFIX + '/login' do
       $redis.set token, user_hash.to_json
       $redis.expire token, 432000
       u_hash = @user
-      puts "https://fierce-garden-41263.herokuapp.com/api/v1/#{params[:token].to_s}/users/#{first_try["id"].to_s}/leader-list"
-      u_hash['leaders'] = JSON.parse(RestClient.get "https://fierce-garden-41263.herokuapp.com/api/v1/#{params[:token].to_s}/users/#{first_try["id"].to_s}/leader-list", {})
+      puts "https://fierce-garden-41263.herokuapp.com/api/v1/#{token}/users/#{first_try["id"].to_s}/leader-list"
+      u_hash['leaders'] = JSON.parse(RestClient.get "https://fierce-garden-41263.herokuapp.com/api/v1/#{token}/users/#{first_try["id"].to_s}/leader-list", {})
       #Try
       # u_hash['leaders'] = []
       # u_hash['followers'] = []
