@@ -135,16 +135,15 @@ get PREFIX + '/:token/users/:id' do
   first_try = JSON.parse($redis.get params['id'])
   if $redis.get params['token']
     if first_try
-      user = first_try
       return first_try.to_json
     else
       user = User.find params['id']
-      if $redis.get params['token'] && user
+      if user
         u_hash = user.as_json
-        u_hash['leaders'] = []
-        u_hash['followers'] = []
-        user.leaders.each {|l| u_hash['leaders'].push l.id}
-        user.followers.each {|f| u_hash['followers'].push f.id}
+        # u_hash['leaders'] = []
+        # u_hash['followers'] = []
+        # user.leaders.each {|l| u_hash['leaders'].push l.id}
+        # user.followers.each {|f| u_hash['followers'].push f.id}
         return u_hash.to_json
       end
     end
