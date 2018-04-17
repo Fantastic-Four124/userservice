@@ -121,6 +121,9 @@ post PREFIX + '/:token/logout' do
   {err: true}.to_json
 end
 
+get PREFIX + '/redistest' do
+  $redis.get 'hello'   
+end
 #Get User
 get PREFIX + '/:token/users/:id' do
   if $redis.get params['token']
