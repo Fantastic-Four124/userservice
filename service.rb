@@ -62,10 +62,10 @@ def redis_login(id,username,follow_service)
   tokenized(user_hash,token,id,username)
   u_hash = JSON.parse($redis.get(id))
   u_hash['leaders'] = $redis_follow.get(id.to_s + ' leaders')
-  if !u_hash['leaders']
-      leader_link =  follow_service + "#{token}/users/#{id.to_s}/leader-list"
-      u_hash['leaders'] = JSON.parse(RestClient.get leader_link, {})
-  end
+  # if !u_hash['leaders']
+  #     leader_link =  follow_service + "#{token}/users/#{id.to_s}/leader-list"
+  #     u_hash['leaders'] = JSON.parse(RestClient.get leader_link, {})
+  # end
   return {user: u_hash, token: token}
 end
 
@@ -122,7 +122,7 @@ post PREFIX + '/:token/logout' do
 end
 
 get PREFIX + '/redistest' do
-  $redis.get 'hello'   
+  $redis.get 'hello'
 end
 #Get User
 get PREFIX + '/:token/users/:id' do
