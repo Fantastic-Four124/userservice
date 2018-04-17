@@ -71,7 +71,8 @@ end
 
 post PREFIX + '/login' do
   first_try = $redis.get params['username']
-  if (first_try && BCrypt::Password.new(JSON.parse(first_try)["password"]) == params['password'])
+  #if (first_try && BCrypt::Password.new(JSON.parse(first_try)["password"]) == params['password'])
+  if (first_try)
     first_try = JSON.parse(first_try)
     result = redis_login(first_try["id"],params['username'],follow_service)
     return result.to_json
