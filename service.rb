@@ -27,7 +27,8 @@ set :allow_methods, 'GET,HEAD,POST'
 set :allow_headers, 'accept,content-type,if-modified-since'
 set :expose_headers, 'location,link'
 
-#Dir[File.dirname(__FILE__) + '/api/v1/test/*.rb'].each { |file| require file }
+
+Dir[File.dirname(__FILE__) + '/api/v1/test/*.rb'].each { |file| require file }
 
 configure :production do
   require 'newrelic_rpm'
@@ -71,7 +72,7 @@ end
 post PREFIX + '/login' do
   first_try = $redis.get params['username']
   if (first_try && BCrypt::Password.new(JSON.parse(first_try)["password"]) == params['password'])
-    first_try = JSON.parse($redis.get params['username'])
+    first_try = JSON.parse(first_try)
     result = redis_login(first_try["id"],params['username'],follow_service)
     return result.to_json
   else
