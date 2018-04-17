@@ -66,7 +66,7 @@ def redis_login(id,username,follow_service)
   #     leader_link =  follow_service + "#{token}/users/#{id.to_s}/leader-list"
   #     u_hash['leaders'] = JSON.parse(RestClient.get leader_link, {})
   # end
-  return {user: u_hash, token: token}
+  return {user: user_hash, token: token}
 end
 
 post PREFIX + '/login' do
