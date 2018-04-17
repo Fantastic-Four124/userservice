@@ -69,8 +69,9 @@ def redis_login(id,username,follow_service)
 end
 
 post PREFIX + '/login' do
-  first_try = JSON.parse($redis.get params['username'])
-  if (first_try && BCrypt::Password.new(first_try["password"]) == params['password'])
+  first_try = $redis.get params['username']
+  if (first_try && BCrypt::Password.new(JSON.parse(first_try)["password"]) == params['password'])
+    first_try = JSON.parse($redis.get params['username'])
     result = redis_login(first_try["id"],params['username'],follow_service)
     return result.to_json
   else
@@ -92,7 +93,7 @@ def create_user_log(user)
   return user_log
 end
 
-# Register function. If successful, store the basic user info on redis 
+# Register function. If successful, store the basic user info on redis
 post PREFIX + '/users/register' do
   username = params['username'].to_s
   password = params['password'].to_s
