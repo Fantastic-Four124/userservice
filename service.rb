@@ -60,8 +60,8 @@ def redis_login(id,username,follow_service)
   user_hash = Hash.new
   token = SecureRandom.hex
   tokenized(user_hash,token,id,username)
-  u_hash = JSON.parse($redis.get(id))
-  u_hash['leaders'] = $redis_follow.get(id.to_s + ' leaders')
+  # u_hash = JSON.parse($redis.get(id))
+  # u_hash['leaders'] = $redis_follow.get(id.to_s + ' leaders')
   # if !u_hash['leaders']
   #     leader_link =  follow_service + "#{token}/users/#{id.to_s}/leader-list"
   #     u_hash['leaders'] = JSON.parse(RestClient.get leader_link, {})
