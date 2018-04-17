@@ -27,7 +27,7 @@ set :allow_methods, 'GET,HEAD,POST'
 set :allow_headers, 'accept,content-type,if-modified-since'
 set :expose_headers, 'location,link'
 
-Dir[File.dirname(__FILE__) + '/api/v1/test/*.rb'].each { |file| require file }
+#Dir[File.dirname(__FILE__) + '/api/v1/test/*.rb'].each { |file| require file }
 
 configure :production do
   require 'newrelic_rpm'
