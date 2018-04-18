@@ -141,3 +141,10 @@ get PREFIX + '/:token/users/:id' do
   end
   {err: true}.to_json
 end
+
+get PREFIX + '/:id' do
+  if User.exists?(params['id'].to_i)
+    return User.find(params['id'].to_i).username
+  end
+  {err: true}.to_json
+end
