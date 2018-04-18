@@ -51,8 +51,10 @@ def database_login(user,follow_service)
   user_hash = Hash.new
   tokenized(user_hash,token,user.id,user.username)
   u_hash = user.as_json
-  leader_link =  follow_service + "#{token}/users/#{user.id.to_s}/leader-list"
-  u_hash['leaders'] = JSON.parse(RestClient.get leader_link, {})
+  u_hash['leaders'] = []
+  user.leaders.each {|l| u_hash['leaders'].push l.id}
+  # leader_link =  follow_service + "#{token}/users/#{user.id.to_s}/leader-list"
+  # u_hash['leaders'] = JSON.parse(RestClient.get leader_link, {})
   return {user: u_hash, token: token}
 end
 
@@ -63,8 +65,10 @@ def redis_login(id,username,follow_service)
   u_hash = JSON.parse($redis.get(id))
   u_hash['leaders'] = $redis_follow.get(id.to_s + ' leaders')
   if !u_hash['leaders']
-      leader_link =  follow_service + "#{token}/users/#{id.to_s}/leader-list"
-      u_hash['leaders'] = JSON.parse(RestClient.get leader_link, {})
+      u_hash['leaders'] = []
+      user.leaders.each {|l| u_hash['leaders'].push l.id}
+      # leader_link =  follow_service + "#{token}/users/#{id.to_s}/leader-list"
+      # u_hash['leaders'] = JSON.parse(RestClient.get leader_link, {})
   end
   return {user: u_hash, token: token}
 end
