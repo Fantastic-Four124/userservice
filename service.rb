@@ -148,3 +148,7 @@ get PREFIX + '/:id' do
   end
   {err: true}.to_json
 end
+
+get PREFIX + '/random' do
+  User.order('RANDOM()').first.id
+end
