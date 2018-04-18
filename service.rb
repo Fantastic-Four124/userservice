@@ -13,7 +13,7 @@ require_relative 'prefix.rb'
 require_relative 'models/user'
 require_relative 'models/follow'
 
-follow_service = "https://fierce-garden-41263.herokuapp.com/api/v1/"
+
 
 configure do
     uri = URI.parse(ENV['REDISCLOUD_URL'])
@@ -46,19 +46,17 @@ def tokenized(user_hash,token,id,username)
   $redis.expire token, 432000
 end
 
-def database_login(user,follow_service)
+def database_login(user)
   token = SecureRandom.hex
   user_hash = Hash.new
   tokenized(user_hash,token,user.id,user.username)
   u_hash = user.as_json
   u_hash['leaders'] = []
   user.leaders.each {|l| u_hash['leaders'].push l.id}
-  # leader_link =  follow_service + "#{token}/users/#{user.id.to_s}/leader-list"
-  # u_hash['leaders'] = JSON.parse(RestClient.get leader_link, {})
   return {user: u_hash, token: token}
 end
 
-def redis_login(id,username,follow_service)
+def redis_login(id,username)
   user_hash = Hash.new
   token = SecureRandom.hex
   tokenized(user_hash,token,id,username)
@@ -67,8 +65,6 @@ def redis_login(id,username,follow_service)
   if !u_hash['leaders']
       u_hash['leaders'] = []
       user.leaders.each {|l| u_hash['leaders'].push l.id}
-      # leader_link =  follow_service + "#{token}/users/#{id.to_s}/leader-list"
-      # u_hash['leaders'] = JSON.parse(RestClient.get leader_link, {})
   end
   return {user: u_hash, token: token}
 end
@@ -77,12 +73,12 @@ post PREFIX + '/login' do
   first_try = $redis.get params['username']
   if (first_try && BCrypt::Password.new(JSON.parse(first_try)["password"]) == params['password'])
     first_try = JSON.parse(first_try)
-    result = redis_login(first_try["id"],params['username'],follow_service)
+    result = redis_login(first_try["id"],params['username'])
     return result.to_json
   else
     @user = User.find_by_username(params['username'])
     if !@user.nil? && @user.password == params['password']
-      result = database_login(@user,follow_service)
+      result = database_login(@user)
       return result.to_json
     end
   end
