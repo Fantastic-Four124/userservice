@@ -7,20 +7,12 @@ require_relative '../service.rb'
 require_relative '../erb_constants.rb'
 require_relative '../prefix.rb'
 
-# These tests are not done yet! They still need to be filled out as we think of new functionality.
-
 class ServiceTest < Minitest::Test
 
   include Rack::Test::Methods
 
   def app
     Sinatra::Application
-  end
-
-  def clearRedis
-    while $redis.llen('global') > 0
-      $redis.rpop('global')
-    end
   end
 
   def setup
@@ -30,15 +22,12 @@ class ServiceTest < Minitest::Test
     @bob_id = User.find_by_username('bob').id
     @follow_test = Follow.create({user_id: @jim_id, leader_id: @bob_id})
     @follow_test = Follow.create({user_id: @bob_id, leader_id: @jim_id})
-    #clearRedis
   end
 
-#   def teardown
-#     @jim.destroy
-#     @bob.destroy
-#     #not_logged_in
-#     #clearRedis
-#   end
+  def teardown
+    @jim.destroy
+    @bob.destroy
+  end
 
   def test_user
     check = User.find_by_username('jim').email
@@ -50,71 +39,16 @@ class ServiceTest < Minitest::Test
     assert_equal(check,@bob_id)
   end
 
-  # def test_login
-  #   param = { 'username' => 'jim', 'password' => 'abc' }
-  #   response = post PREFIX + '/login', param.to_json
-  #   puts JSON.parse(response)
-  #   assert last_response.ok?
-  # end
+  def test_login
+    param = { 'username' => 'jim', 'password' => 'abc' }
+    response = post PREFIX + '/login', param.to_json
+    assert last_response.ok?
+  end
 
+  def test_register
+    param = { 'username' => 'ken', 'password' => 'abc', 'email' =>'ken@gmail.com' }
+    response = post PREFIX + '/users/register', param.to_json
+    assert last_response.ok?
+  end
 
-
-
-  # def logged_in
-  #   get PREFIX + '/', {}, { 'rack.session' => {user_id: @jim.id, user_hash: @jim, username: @jim.username} }
-  # end
-  #
-  # def not_logged_in
-  #   get PREFIX + '/', {}, { 'rack.session' => {username: nil} }
-  # end
-  #
-  # def test_home
-  #   not_logged_in
-  #   #byebug
-  #   assert last_response.ok? && (last_response.body.include? 'Login to nanoTwitter')
-  # end
-  #
-  # def test_login_page
-  #   not_logged_in
-  #   get PREFIX + '/login'
-  #   assert last_response.ok? && (last_response.body.include? 'Login to Nanotwitter') && (last_response.body.include? `<form action="#{PREFIX}/login" method="POST">`)
-  # end
-  #
-  # def test_registration_page
-  #   not_logged_in
-  #   get PREFIX + '/user/register'
-  #   assert last_response.ok? && (last_response.body.include? 'Register in Nanotwitter')
-  # end
-  #
-  # def test_login_correctly
-  #   not_logged_in
-  #   get PREFIX + '/login'
-  #   param = { 'username' => 'jim', 'password' => 'abc' }
-  #   post PREFIX + '/login', param.to_json, "CONTENT_TYPE" => "application/json"
-  #   assert last_response.ok?
-  # end
-  #
-  # def test_home_logged_in
-  #   logged_in
-  #   get PREFIX + '/'
-  #   assert last_response.ok?
-  #   assert last_response.body.include?('jim')
-  # end
-  #
-  # def test_login_incorrectly
-  #   get PREFIX + '/login'
-  #   param = { 'username' => 'obviously wrong', 'password' => 'wrong' }
-  #   post PREFIX + '/login', param.to_json, "CONTENT_TYPE" => "application/json"
-  #   assert last_response.body.include?("Wrong password or username.")
-  # end
-  #
-  # def test_logout
-  #   logged_in
-  #   assert last_response.ok?
-  #   assert last_response.body.include?('jim')
-  #   post PREFIX + '/logout'
-  #   get PREFIX + '/'
-  #   assert last_response.ok?
-  #   assert last_response.body.include?("Login to nanoTwitter")
-  # end
 end
