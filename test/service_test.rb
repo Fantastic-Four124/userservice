@@ -46,7 +46,7 @@ class ServiceTest < Minitest::Test
   end
 
   def test_register
-    param = { 'username' => 'ken', 'password' => 'abc', 'email' =>'ken@gmail.com' }
+    param = { 'username' => 'kentest', 'password' => 'abc', 'email' =>'ken@gmail.com' }
     response = post PREFIX + '/users/register', param.to_json
     assert last_response.ok?
   end
