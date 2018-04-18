@@ -60,20 +60,18 @@ def redis_login(id,username,follow_service)
   user_hash = Hash.new
   token = SecureRandom.hex
   tokenized(user_hash,token,id,username)
-  # u_hash = JSON.parse($redis.get(id))
-  # u_hash['leaders'] = $redis_follow.get(id.to_s + ' leaders')
-  # if !u_hash['leaders']
-  #     leader_link =  follow_service + "#{token}/users/#{id.to_s}/leader-list"
-  #     u_hash['leaders'] = JSON.parse(RestClient.get leader_link, {})
-  # end
-  return {user: user_hash, token: token}
+  u_hash = JSON.parse($redis.get(id))
+  u_hash['leaders'] = $redis_follow.get(id.to_s + ' leaders')
+  if !u_hash['leaders']
+      leader_link =  follow_service + "#{token}/users/#{id.to_s}/leader-list"
+      u_hash['leaders'] = JSON.parse(RestClient.get leader_link, {})
+  end
+  return {user: u_hash, token: token}
 end
 
 post PREFIX + '/login' do
   first_try = $redis.get params['username']
-  my_password = BCrypt::Password.create(params['password'])
-  if (first_try && JSON.parse(first_try)["password"] == my_password)
-  #if (first_try)
+  if (first_try && BCrypt::Password.new(JSON.parse(first_try)["password"]) == params['password'])
     first_try = JSON.parse(first_try)
     result = redis_login(first_try["id"],params['username'],follow_service)
     return result.to_json
