@@ -63,7 +63,7 @@ def redis_login(id,username,follow_service)
   token = SecureRandom.hex
   tokenized(user_hash,token,id,username)
   u_hash = JSON.parse($redis.get(id))
-  u_hash['leaders'] = $redis_follow.get(id.to_s + ' leaders')
+  u_hash['leaders'] = JSON.parse($redis_follow.get(id.to_s + ' leaders')).keys
   if !u_hash['leaders']
       u_hash['leaders'] = []
       user.leaders.each {|l| u_hash['leaders'].push l.id}
