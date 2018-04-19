@@ -148,3 +148,32 @@ end
 get PREFIX + '/random' do
   User.order('RANDOM()').first.id
 end
+
+get PREFIX + '/testcreate' do
+  if !params['id'].nil?
+    user = User.new(username: params['username'], password: params['password'],number_of_followers: 0, number_of_leaders: 0)
+    user.save
+    return User.find_by_username(params['username').id
+  else
+    reset_db_peak_sequence
+    user = User.new(id:params['id'],username: params['username'], password: params['password'],number_of_followers: 0, number_of_leaders: 0)
+    user.save
+    return params['id']
+  end
+end
+
+get PREFIX + '/remove' do
+  $redis.del params['username'] if $redis.get params['username']  
+  User.find_by_username(params['username']).destroy
+end
+
+get PREFIX + '/status' do
+  return {num_users: User.count}.to_json
+end
+
+# Calling this will prevent activerecord from assigning the same id (which violates constrain)
+def reset_db_peak_sequence
+  ActiveRecord::Base.connection.tables.each do |t|
+    ActiveRecord::Base.connection.reset_pk_sequence!(t)
+  end
+end
