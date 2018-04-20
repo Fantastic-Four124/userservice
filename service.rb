@@ -174,7 +174,7 @@ end
 
 post '/bulkinsert' do
   values = JSON.parse(params['bulk'])
-  User.import values
+  User.import values, :validate => false
 end
 
 # Calling this will prevent activerecord from assigning the same id (which violates constrain)
