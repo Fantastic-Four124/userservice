@@ -151,12 +151,12 @@ end
 
 get PREFIX + '/testcreate' do
   if !params['id'].nil?
-    user = User.new(username: params['username'], password: params['password'],number_of_followers: 0, number_of_leaders: 0)
+    user = User.new(username: params['username'], password: params['password'], email: params['email'],number_of_followers: 0, number_of_leaders: 0)
     user.save
     return User.find_by_username(params['username').id
   else
     reset_db_peak_sequence
-    user = User.new(id:params['id'],username: params['username'], password: params['password'],number_of_followers: 0, number_of_leaders: 0)
+    user = User.new(id:params['id'],username: params['username'], password: params['password'],email: params['email'],number_of_followers: 0, number_of_leaders: 0)
     user.save
     return params['id']
   end
