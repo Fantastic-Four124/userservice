@@ -163,11 +163,15 @@ get PREFIX + '/testcreate' do
 end
 
 get PREFIX + '/remove' do
-  $redis.del params['username'] if $redis.get params['username']  
+  $redis.del params['username'] if $redis.get params['username']
   User.find_by_username(params['username']).destroy
 end
 
 get PREFIX + '/status' do
+  return {num_users: User.count}.to_json
+end
+
+post PREFIX + '/bulkinsert' do
   return {num_users: User.count}.to_json
 end
 
