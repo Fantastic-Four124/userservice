@@ -173,7 +173,7 @@ get '/status' do
 end
 
 post '/bulkinsert' do
-  values =  JSON.parse(params['bulk'])
+  values = JSON.parse(params['bulk'])
   User.import values
 end
 
