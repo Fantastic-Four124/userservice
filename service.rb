@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'sinatra/activerecord'
+require 'activerecord-import'
 require 'byebug'
 require 'bcrypt'
 require 'time_difference'
