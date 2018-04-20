@@ -12,7 +12,6 @@ require 'redis'
 require_relative 'prefix.rb'
 require_relative 'models/user'
 require_relative 'models/follow'
-require 'activerecord-import/active_record/adapters/fake_name_adapter'
 
 
 
