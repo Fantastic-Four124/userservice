@@ -138,18 +138,18 @@ get PREFIX + '/:token/users/:id' do
   {err: true}.to_json
 end
 
-get PREFIX + '/:id' do
+get '/:id' do
   if User.exists?(params['id'].to_i)
     return User.find(params['id'].to_i).username
   end
   {err: true}.to_json
 end
 
-get PREFIX + '/random' do
+get '/random' do
   User.order('RANDOM()').first.id
 end
 
-get PREFIX + '/testcreate' do
+get '/testcreate' do
   if !params['id'].nil?
     user = User.new(username: params['username'], password: params['password'], email: params['email'],number_of_followers: 0, number_of_leaders: 0)
     user.save
@@ -162,16 +162,16 @@ get PREFIX + '/testcreate' do
   end
 end
 
-get PREFIX + '/remove' do
+get '/remove' do
   $redis.del params['username'] if $redis.get params['username']
   User.find_by_username(params['username']).destroy
 end
 
-get PREFIX + '/status' do
+get '/status' do
   return {num_users: User.count}.to_json
 end
 
-post PREFIX + '/bulkinsert' do
+post '/bulkinsert' do
   return {num_users: User.count}.to_json
 end
 
