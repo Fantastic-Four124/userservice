@@ -172,8 +172,8 @@ get '/status' do
 end
 
 post '/bulkinsert' do
-  puts params
-  #User.import columns,values
+  values =  JSON.parse(params['bulk'])
+  User.import values
 end
 
 # Calling this will prevent activerecord from assigning the same id (which violates constrain)
