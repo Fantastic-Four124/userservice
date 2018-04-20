@@ -173,7 +173,7 @@ end
 
 post '/bulkinsert' do
   puts params
-  User.import columns,values
+  #User.import columns,values
 end
 
 # Calling this will prevent activerecord from assigning the same id (which violates constrain)
