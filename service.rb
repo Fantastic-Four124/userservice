@@ -101,7 +101,7 @@ post PREFIX + '/users/register' do
   password = params['password'].to_s
   email = params['email'].to_s
   user = User.new(username: username, password: password, email:email, number_of_followers: 0, number_of_leaders: 0)
-
+  reset_db_peak_sequence
   if user.save
      token = SecureRandom.hex
      user_hash = Hash.new
