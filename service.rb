@@ -113,6 +113,20 @@ post PREFIX + '/users/register' do
   {err: true}.to_json
 end
 
+post '/test/insert' do
+  username = params['username'].to_s
+  password = params['password'].to_s
+  email = params['email'].to_s
+  user = User.new(id:params['id'],username: username, password: password, email:email, number_of_followers: 0, number_of_leaders: 0)
+
+  if user.save
+     user_log = create_user_log(user)
+     return {user: user.as_json}.to_json
+  end
+
+  {err: true}.to_json
+end
+
 #logout delete token session on redis
 post PREFIX + '/:token/logout' do
   if $redis.get params['token']
@@ -175,6 +189,14 @@ end
 post '/bulkinsert' do
   values = JSON.parse(params['bulk'])
   User.import values, :validate => false
+end
+
+# Danger Zone
+post '/removeall' do
+  $redis_follow.flushall
+  $redis.flushall
+  User.destroy_all
+  Follow.destroy_all
 end
 
 # Calling this will prevent activerecord from assigning the same id (which violates constrain)
