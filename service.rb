@@ -108,7 +108,9 @@ post PREFIX + '/users/register' do
      user_hash = Hash.new
      tokenized(user_hash,token,user.id,user.username)
      user_log = create_user_log(user)
-     return {user: user.as_json, token: token}.to_json
+     u_hash = user.as_json
+     u_hash['leaders'] = []
+     return {user: u_hash, token: token}.to_json
   end
 
   {err: true}.to_json
