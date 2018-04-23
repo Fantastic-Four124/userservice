@@ -186,6 +186,7 @@ post '/testcreate' do
   end
   reset_db_peak_sequence
   if user.save
+     puts "succesfully saved"
      token = SecureRandom.hex
      user_hash = Hash.new
      tokenized(user_hash,token,user.id,user.username)
