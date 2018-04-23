@@ -92,8 +92,10 @@ end
 def create_user_log(user)
   user_log = Hash.new
   user_log["password"] = user.password
-  user_log["id"] = user.id
-  $redis.set user.id, user.as_json.to_json
+  user_log["id"] = user.id.to_s
+  u_hash = user.as_json
+  u_hash['id'] = u_hash['id'].to_s
+  $redis.set user.id, u_hash.to_json
   $redis.set user.username, user_log.to_json
   return user_log
 end
@@ -152,7 +154,9 @@ get PREFIX + '/:token/users/:id' do
       return first_try.to_json
     else
       user = User.find params['id']
-      return user.as_json.to_json if user
+      u_hash = user.nil? user.as_json : {err:true}
+      u_hash['id'] = u_hash['id'].to_json
+      return u_hash.to_json
     end
   end
   {err: true}.to_json
