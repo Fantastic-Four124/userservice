@@ -179,6 +179,7 @@ end
 post '/testcreate' do
   puts params
   user = nil
+  reset_db_peak_sequence
   if params['id'].nil?
     user = User.new(username: params['username'], password: params['password'], email: params['email'], number_of_followers: 0, number_of_leaders: 0)
   else
