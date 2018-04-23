@@ -208,7 +208,7 @@ post '/removeall' do
   $redis_follow.flushall
   $redis.flushall
   User.destroy_all
-  Follow.destroy_all
+  #Follow.destroy_all
 end
 
 # Calling this will prevent activerecord from assigning the same id (which violates constrain)
