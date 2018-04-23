@@ -53,6 +53,7 @@ def database_login(user)
   tokenized(user_hash,token,user.id,user.username)
   u_hash = user.as_json
   u_hash['leaders'] = []
+  u_hash['id'] = u_hash['id'].to_s
   user.leaders.each {|l| u_hash['leaders'].push l.id.to_s}
   return {user: u_hash, token: token}
 end
@@ -63,6 +64,7 @@ def redis_login(id,username)
   tokenized(user_hash,token,id,username)
   u_hash = JSON.parse($redis.get(id))
   u_hash['leaders'] = JSON.parse($redis_follow.get(id.to_s + ' leaders')).keys if $redis_follow.get(id.to_s + ' leaders')
+  u_hash['id'] = u_hash['id'].to_s
   if u_hash['leaders'].nil?
       u_hash['leaders'] = []
       user = User.find(id)
