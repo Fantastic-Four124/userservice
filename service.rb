@@ -184,7 +184,7 @@ post '/testcreate' do
   else
     user = User.new(id: params['id'],username: params['username'], password: params['password'], email:params['email'], number_of_followers: 0, number_of_leaders: 0)
   end
-  reset_db_peak_sequence
+  #reset_db_peak_sequence
   if user.save
      puts "succesfully saved"
      token = SecureRandom.hex
