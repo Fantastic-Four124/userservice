@@ -154,9 +154,11 @@ get PREFIX + '/:token/users/:id' do
       return first_try.to_json
     else
       user = User.find params['id']
-      u_hash = user.nil? user.as_json : {err:true}
-      u_hash['id'] = u_hash['id'].to_json
-      return u_hash.to_json
+      if user
+        u_hash = user.as_json
+        u_hash['id'] = u_hash['id'].to_json
+        return u_hash.to_json
+      end
     end
   end
   {err: true}.to_json
