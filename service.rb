@@ -177,16 +177,21 @@ get '/random' do
 end
 
 get '/testcreate' do
-  if !params['id'].nil?
-    user = User.new(username: params['username'], password: params['password'], email: params['email'],number_of_followers: 0, number_of_leaders: 0)
-    user.save
-    return User.find_by_username(params['username']).id
+  user = nil
+  if params['id'].nil?
+    user = User.new(username: params['username'], password: params['password'], email: params['email'], number_of_followers: 0, number_of_leaders: 0)
   else
-    reset_db_peak_sequence
-    user = User.new(id:params['id'],username: params['username'], password: params['password'],email: params['email'],number_of_followers: 0, number_of_leaders: 0)
-    user.save
-    return params['id']
+    user = User.new(id: params['id'],username: params['username'], password: params['password'], email:params['email'], number_of_followers: 0, number_of_leaders: 0)
   end
+  reset_db_peak_sequence
+  if user.save
+     token = SecureRandom.hex
+     user_hash = Hash.new
+     tokenized(user_hash,token,user.id,user.username)
+     user_log = create_user_log(user)
+     return user.id
+  end
+  {err: true}.to_json
 end
 
 get '/remove' do
