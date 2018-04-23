@@ -184,7 +184,7 @@ post '/testcreate' do
   else
     user = User.new(id: params['id'],username: params['username'], password: params['password'], email:params['email'], number_of_followers: 0, number_of_leaders: 0)
   end
-  #reset_db_peak_sequence
+  puts user.as_json
   if user.save
      puts "succesfully saved"
      token = SecureRandom.hex
@@ -193,6 +193,7 @@ post '/testcreate' do
      user_log = create_user_log(user)
      return user.id
   end
+  puts "not successful"
   {err: true}.to_json
 end
 
