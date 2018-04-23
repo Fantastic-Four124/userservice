@@ -176,7 +176,8 @@ get '/random' do
   User.order('RANDOM()').first.id
 end
 
-get '/testcreate' do
+post '/testcreate' do
+  puts params
   user = nil
   if params['id'].nil?
     user = User.new(username: params['username'], password: params['password'], email: params['email'], number_of_followers: 0, number_of_leaders: 0)
