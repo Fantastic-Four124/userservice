@@ -191,7 +191,7 @@ post '/testcreate' do
      user_hash = Hash.new
      tokenized(user_hash,token,user.id,user.username)
      user_log = create_user_log(user)
-     return user.id
+     return user.id.to_json
   end
   puts "not successful"
   {err: true}.to_json
