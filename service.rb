@@ -165,7 +165,7 @@ get PREFIX + '/:token/users/:id' do
   {err: true}.to_json
 end
 
-get PREFIX + '/users/exists' do
+post PREFIX + '/users/exists' do
   puts params
   results = []
   User.where(username: JSON.parse(params[:username])).pluck(:username, :id).each do |r|
