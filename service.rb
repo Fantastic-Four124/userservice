@@ -214,7 +214,7 @@ get '/remove' do
 end
 
 get '/status' do
-  return {num_users: User.count}.to_json
+  "number of users: #{User.count}"
 end
 
 post '/bulkinsert' do
