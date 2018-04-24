@@ -182,7 +182,7 @@ get '/:id' do
   {err: true}.to_json
 end
 
-get '/random' do
+get '/test/random' do
   User.order('RANDOM()').first.id
 end
 
@@ -208,7 +208,7 @@ post '/testcreate' do
   {err: true}.to_json
 end
 
-get '/remove' do
+get '/test/remove' do
   $redis.del params['username'] if $redis.get params['username']
   User.find_by_username(params['username']).destroy
 end
