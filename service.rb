@@ -182,6 +182,16 @@ get '/:id' do
   {err: true}.to_json
 end
 
+get '/users/:username/username' do
+  user = User.find_by_username(params['username'])
+  if user
+    user_arr = []
+    user_arr << user.as_json
+    return user_arr.to_json
+  end
+  {err: true}.to_json
+end
+
 get '/test/random' do
   User.order('RANDOM()').first.id
 end
