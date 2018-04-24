@@ -213,7 +213,7 @@ get '/remove' do
   User.find_by_username(params['username']).destroy
 end
 
-get '/status' do
+get 'test/status' do
   "number of users: #{User.count}"
 end
 
