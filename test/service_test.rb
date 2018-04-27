@@ -4,8 +4,8 @@ require 'rake/testtask'
 require 'json'
 require 'rest-client'
 require_relative '../service.rb'
-require_relative '../erb_constants.rb'
-require_relative '../prefix.rb'
+#require_relative '../erb_constants.rb'
+#require_relative '../prefix.rb'
 
 class ServiceTest < Minitest::Test
 
@@ -48,6 +48,22 @@ class ServiceTest < Minitest::Test
   def test_register
     param = { 'username' => 'kentest', 'password' => 'abc', 'email' =>'ken@gmail.com' }
     response = post PREFIX + '/users/register', param.to_json
+    assert last_response.ok?
+  end
+
+  def test_exists
+    usernames = ['jim','bob']
+    response = post PREFIX + '/users/exists', {'usernames' => usernames.to_json}
+    assert last_response.ok?
+  end
+
+  def test_id
+    response = get '/1'
+    assert last_response.ok?
+  end
+
+  def test_find_username
+    response = get '/users/jim/username'
     assert last_response.ok?
   end
 

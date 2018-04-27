@@ -1,1 +1,0 @@
-PREFIX = '/api/v1'
