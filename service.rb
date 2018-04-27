@@ -197,11 +197,23 @@ get '/users/:username/username' do
   {err: true}.to_json
 end
 
-def reset_db_peak_sequence
-  ActiveRecord::Base.connection.tables.each do |t|
-    ActiveRecord::Base.connection.reset_pk_sequence!(t)
+get '/users/search/:pattern' do
+  result = []
+  potential_list = User.where("username like ?", "%#{params[:pattern]}%")
+  potential_list.each do |user|
+    sub_user_hash = Hash.new
+    sub_user_hash[:id] = user.id
+    sub_user_hash[:username] = user.username
+    result << sub_user_hash
   end
+  return result.to_json
 end
+
+# def reset_db_peak_sequence
+#   ActiveRecord::Base.connection.tables.each do |t|
+#     ActiveRecord::Base.connection.reset_pk_sequence!(t)
+#   end
+# end
 
 # get '/test/random' do
 #   User.order('RANDOM()').first.id
