@@ -1,22 +1,3 @@
-require 'sinatra'
-require 'sinatra/activerecord'
-require 'activerecord-import'
-require 'byebug'
-require 'bcrypt'
-require 'time_difference'
-require 'time'
-require 'json'
-require 'rest-client'
-require 'sinatra/cors'
-require 'securerandom'
-require 'redis'
-require_relative 'user_helper'
-#require_relative 'prefix.rb'
-require_relative 'models/user'
-require_relative 'models/follow'
-
-PREFIX = '/api/v1'
-
 get '/test/random' do
   User.order('RANDOM()').first.id
 end
@@ -32,8 +13,8 @@ post '/testcreate' do
   if user.save
      token = SecureRandom.hex
      user_hash = Hash.new
-     tokenized(user_hash,token,user.id,user.username)
-     user_log = create_user_log(user)
+     HELPER.tokenized(user_hash,token,user.id,user.username)
+     user_log = HELPER.create_user_log(user)
      return user.id.to_json
   end
   {err: true}.to_json
