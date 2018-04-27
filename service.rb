@@ -147,7 +147,7 @@ get '/users/:username/username' do
   {err: true}.to_json
 end
 
-get '/users/search/:pattern' do
+get PREFIX + '/users/search/:pattern' do
   result = []
   potential_list = User.where("username like ?", "%#{params[:pattern]}%")
   potential_list.each do |user|
