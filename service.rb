@@ -137,6 +137,13 @@ get '/:id' do
   {err: true}.to_json
 end
 
+get PREFIX + '/users/:id' do
+  if User.exists?(params['id'].to_i)
+    return User.find(params['id'].to_i).as_json.to_json
+  end
+  {err: true}.to_json
+end
+
 get '/users/:username/username' do
   user = User.find_by_username(params['username'])
   if user
