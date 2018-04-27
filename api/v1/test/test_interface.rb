@@ -1,3 +1,22 @@
+require 'sinatra'
+require 'sinatra/activerecord'
+require 'activerecord-import'
+require 'byebug'
+require 'bcrypt'
+require 'time_difference'
+require 'time'
+require 'json'
+require 'rest-client'
+require 'sinatra/cors'
+require 'securerandom'
+require 'redis'
+require_relative 'user_helper'
+#require_relative 'prefix.rb'
+require_relative 'models/user'
+require_relative 'models/follow'
+
+PREFIX = '/api/v1'
+
 get '/test/random' do
   User.order('RANDOM()').first.id
 end
