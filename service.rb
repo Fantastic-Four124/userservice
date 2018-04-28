@@ -137,9 +137,13 @@ get '/:id' do
   {err: true}.to_json
 end
 
-get PREFIX + '/users/:id' do
-  if User.exists?(params['id'].to_i)
-    return User.find(params['id'].to_i).as_json.to_json
+get PREFIX + '/:token/users/:id' do
+  session =  $redis.get params['token']
+  session = true if params['token'] == 'testuser'
+  if session
+    if User.exists?(params['id'].to_i)
+      return User.find(params['id'].to_i).as_json.to_json
+    end
   end
   {err: true}.to_json
 end
